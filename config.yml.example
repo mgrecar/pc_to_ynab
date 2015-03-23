@@ -1,0 +1,10 @@
+---
+# output_path is a directory path to write the output files to
+output_path: './ynab_imports'
+# accounts is a list of account names from Personal Capital
+# each account listed here will result in a separate file
+# in the output_path containing the transactions for that account
+accounts: 
+  - 'Capital One 360 Savings'
+  - 'Key Checking'
+  - 'Capital One CC'
