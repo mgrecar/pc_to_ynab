@@ -6,6 +6,10 @@ def load_config(config_file)
   YAML.load(File.open(config_file))
 end
 
+def quote_string(string)
+  '"' + string + '"' unless string.nil?
+end
+
 # TODO: consider implementing optionparser or another command line args gem to make this a little better
 # TODO: provide a helpful error in case it's not provided
 input_file = ARGV[0]
@@ -37,13 +41,14 @@ accounts.select!{ |name, _| config['accounts'].include?(name) }
 # TODO: find a better way to add line separation
 accounts.each do |account_name, records|
   # TODO: create a directory if it doesn't exist
+  # TODO: can you output a file with SmarterCSV as well?
   File.open("#{config['output_path']}/#{account_name}-transactions.csv",'w') do |file|
     file << headers.join(',') << "\n"
     records.each do |rec|
       file << Date.parse(rec[:date]).strftime('%m/%d/%Y') << ','
-      file << rec[:payee] << ','
+      file << quote_string(rec[:payee]) << ','
       file << ',' # PC categories don't map cleanly
-      file << rec[:memo] << ','
+      file << quote_string(rec[:memo]) << ','
       file << ',' # ignore outflow in preference to amount
       file << ',' # ignore inflow in preference to amount
       file << rec[:amount] << ','
